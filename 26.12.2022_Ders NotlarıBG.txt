@@ -1,0 +1,48 @@
+use OKUL
+create table Not1
+(NotId int Primary Key,
+OgrNo int Foreign Key References Ogrenci(OgrNo), 
+DersKodu nvarchar(10) not null,
+Vize float,
+Final float
+)
+
+use OKUL
+insert into Ogrenci(OgrNo,Ad,Soyad)
+values(101,'Ali','Turan')
+
+use OKUL
+insert into Not1
+(NotId,OgrNo,DersKodu,Vize,Final)
+values(1,101,'MM1',36,47)
+
+-------------------------------------------------------
+use OKUL
+create table Bolum(
+BolumKodu int Primary Key,
+BolumAdi nvarchar(20) not null
+)
+
+use OKUL
+create table Ders(
+DersKodu nvarchar(10) Primary Key,
+DersAdi nvarchar(20) not null,
+BolumKodu int foreign key References Bolum(BolumKodu)
+)
+----------------------------------
+
+use KUTUPHANE
+create table Ogrenci(
+TcNo int Primary Key,
+Ad nvarchar(20) not null,
+Soyad nvarchar(20) not null
+)
+
+select Ad,Soyad from Ogrenci inner join Rezervasyon 
+on Rezervasyon.OgrNo=Ogrenci.TcNo 
+where Rezervasyon.KitapNo=11
+
+
+use KUTUPHANE
+select Yazar from Kitap inner join Rezervasyon 
+on Rezervasyon.KitapNo=Kitap.KitapNo where Rezervasyon.KitapNo=11
