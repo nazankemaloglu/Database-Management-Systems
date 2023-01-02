@@ -1,0 +1,46 @@
+
+create database Alisveris
+
+use Alisveris
+create table Musteri(
+Musteri_Id int Primary Key,
+Ad nvarchar(20) not null,
+Soyad nvarchar(20) not null,
+Telefon nvarchar(11) not null,
+mail nvarchar(30) not null
+)
+
+
+create table Urun(
+Urun_Id int Primary Key,
+Urun_Adi nvarchar(50) not null,
+Fiyat float not null
+)
+
+
+
+use Alisveris
+create table Siparis(
+Siparis_No int Primary Key,
+Tarih Date not null,
+KargoFirmasi nvarchar(10) not null,
+UrunId int foreign key references Urun(Urun_Id),
+Musteri int foreign key references Musteri(Musteri_Id)
+)
+
+#31.12.2022 tarihi sonrasında alışveriş yapanların listelenmesi
+
+select Ad,Soyad from Musteri inner join Siparis 
+on Musteri.Musteri_Id=Siparis.Musteri where Tarih>'2022/12/31'
+
+#ARAS kargodan kargo bekleyen kişilein ad, soyad ve telefonu
+
+use Alisveris
+select Ad, Soyad, Telefon from Musteri inner join Siparis on 
+Musteri.Musteri_Id=Siparis.Musteri where 
+Siparis.KargoFirmasi='ARAS'
+
+use Alisveris
+select Ad,Soyad from Musteri inner join Siparis on 
+Siparis. Musteri=Musteri.Musteri_Id
+where Siparis.UrunId in (Select Urun_Id from Urun where Fiyat>200)
